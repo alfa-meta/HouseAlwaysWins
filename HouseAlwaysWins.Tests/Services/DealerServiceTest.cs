@@ -10,11 +10,23 @@ public class DealerServiceTest
 {
     private IDealerService ds = new DealerService();
     private readonly ITestOutputHelper _outputHelper;
-
+    // private readonly int deterministicSeedValue = 7;
+    // private readonly Queue<Card> smallStockDeck;
+    // private readonly Queue<Card> mediumStockDeck;
+    // private readonly Queue<Card> largeStockDeck;
 
     public DealerServiceTest(ITestOutputHelper output)
     {
         _outputHelper = output;
+    }
+
+    [Fact]
+    public void TwoDecksAreTheSame()
+    {
+        Queue<Card> testDeck = ds.CreateFullDeck();
+        Queue<Card> testDeck2 = ds.CreateFullDeck();
+
+        Assert.Equal(testDeck, testDeck2);
     }
 
     [Fact]
@@ -132,16 +144,44 @@ public class DealerServiceTest
         Assert.Equal(1, testDeckCount);
     }
 
+    //     Queue<Card> ShuffleDeck(Queue<Card> deck, int seed) Tests --------------
+
     [Fact]
-    public void FailedShuffleDeck()
+    public void FailedShuffleDeckRandom()
     {
 
     }
 
     [Fact]
-    public void SuccessShuffleDeck()
+    public void SuccessShuffleDeckRandom()
+    {
+        Queue<Card> testDeck = ds.CreateFullDeck();
+
+        foreach (Card card in testDeck)
+        {
+            _outputHelper.WriteLine($"Test Card: {card}");
+        }
+
+        Queue<Card> testShuffledDeck = ds.ShuffleDeck(testDeck, 0);
+
+        foreach (Card card in testShuffledDeck)
+        {
+            _outputHelper.WriteLine($"Shuffled Card: {card}");
+        }
+
+        Assert.NotEqual(testDeck, testShuffledDeck);
+    }
+
+    [Fact]
+    public void FailedShuffleDeckSeeded()
     {
 
+    }
+    
+    [Fact]
+    public void SuccessShuffleDeckSeeded()
+    {
+        
     }
 
     [Fact]

@@ -31,9 +31,36 @@ public class DealerService : IDealerService
         return deck;
     }
 
-    public Queue<Card> ShuffleDeck(Queue<Card> deck)
+    /*
+    *   The following algorithm is split into two parts.
+    *   Check if seed is bigger than 0 if it is then the deck will always be shuffled
+    *   in the same order.
+    *   The shuffling uses Fisher-Yates shuffle algorithm.
+    *   
+    */
+    public Queue<Card> ShuffleDeck(Queue<Card> deck, int seed)
     {
-        throw new NotImplementedException();
+        Random rng;
+
+        if (seed > 0)
+        {
+            rng = new Random(seed); // Seed determined shuffle.
+        } else
+        {
+            rng = new Random(); // Undeterministic randomness
+        }
+
+        Card[] shuffleDeckArray = deck.ToArray();
+
+        for (int i = shuffleDeckArray.Length - 1; i > 0; i--)
+        {
+            int j = rng.Next(i + 1); // random index from 0 to 1
+            (shuffleDeckArray[i], shuffleDeckArray[j]) = (shuffleDeckArray[j], shuffleDeckArray[i]); // swap
+        }
+
+        deck = new Queue<Card>(shuffleDeckArray);
+    
+        return deck;
     }
 
     public Card PickACardFromTheTop(Queue<Card> deck)
