@@ -8,7 +8,7 @@ public class CardTests
     static Card AceOfSpades = new Card(Suit.Spades, Rank.Ace);
 
     [Fact]
-    public void TestCorrectRank()
+    public void SuccessCorrectRank()
     {
         // Assert.NotEqual<T>(T expected, T actual)
         Assert.NotEqual(Rank.Three, TwoOfHearts.rank);
@@ -16,7 +16,7 @@ public class CardTests
     }
 
     [Fact]
-    public void TestCorrectSuit()
+    public void SuccessCorrectSuit()
     {
         // Negative check: suit is not Spades
         Assert.NotEqual(Suit.Spades, TwoOfHearts.suit);
@@ -24,4 +24,5 @@ public class CardTests
         // (Optional stronger positive check)
         Assert.Equal(Suit.Hearts, TwoOfHearts.suit);
     }
+
 }
