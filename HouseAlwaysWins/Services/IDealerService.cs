@@ -12,6 +12,5 @@ public interface IDealerService
     Card PickACardFromTheTop(Queue<Card> deck);
     Card PickACardFromTheBottom(Queue<Card> deck);
     int NumberOfCardsLeft(Queue<Card> deck);
-    void PrintDeck();
-    void AssignDeckType();
+    void PrintDeck(Queue<Card> deck);
 }

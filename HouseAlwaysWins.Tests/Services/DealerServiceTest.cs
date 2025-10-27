@@ -10,14 +10,17 @@ public class DealerServiceTest
 {
     private IDealerService ds = new DealerService();
     private readonly ITestOutputHelper _outputHelper;
-    // private readonly int deterministicSeedValue = 7;
-    // private readonly Queue<Card> smallStockDeck;
-    // private readonly Queue<Card> mediumStockDeck;
-    // private readonly Queue<Card> largeStockDeck;
+    private readonly Queue<Card> _testDeck;
+    private readonly int _deterministicSeedValue = 7;
+    // private readonly Queue<Card> _smallStockDeck;
+    // private readonly Queue<Card> _mediumStockDeck;
+    // private readonly Queue<Card> _largeStockDeck;
 
     public DealerServiceTest(ITestOutputHelper output)
     {
         _outputHelper = output;
+        _testDeck = ds.CreateFullDeck();
+        // _smallStockDeck = ds.CreateFullDeck();
     }
 
     [Fact]
@@ -31,13 +34,11 @@ public class DealerServiceTest
 
     [Fact]
     public void SuccessfullFullDeck52Count()
-    {
-        Queue<Card> testDeck = ds.CreateFullDeck();
-        
-        bool deckCardCount = testDeck.Count == 52;
+    {     
+        bool deckCardCount = _testDeck.Count == 52;
 
         _outputHelper.WriteLine($"Correct - deckCardCount: {deckCardCount}");
-        _outputHelper.WriteLine($"Bottom Card of the Deck: {testDeck.Last().ToString()}");
+        _outputHelper.WriteLine($"Bottom Card of the Deck: {_testDeck.Last().ToString()}");
         
         Assert.True(deckCardCount);
     }
@@ -109,13 +110,12 @@ public class DealerServiceTest
     [Fact]
     public void SuccessEmptyADeck()
     {
-        Queue<Card> testDeckFull = ds.CreateFullDeck();
         Queue<Card> testDeckEmpty = ds.CreateEmptyDeck();
 
-        int preTestDeckFullCount = testDeckFull.Count();
+        int preTestDeckFullCount = _testDeck.Count();
         int preTestDeckEmptyCount = testDeckEmpty.Count();
 
-        testDeckFull = ds.EmptyDeck(testDeckFull);
+        Queue<Card> testDeckFull = ds.EmptyDeck(ds.CreateFullDeck());
         testDeckEmpty = ds.EmptyDeck(testDeckEmpty);
 
         int postTestDeckFullCount = testDeckFull.Count();
@@ -132,9 +132,8 @@ public class DealerServiceTest
     [Fact]
     public void FailedEmptyADeck()
     {
-        Queue<Card> testDeck = ds.CreateFullDeck();
-        int preTestDeckCount = testDeck.Count();
-        testDeck = ds.EmptyDeck(testDeck);
+        int preTestDeckCount = _testDeck.Count();
+        Queue<Card> testDeck = ds.EmptyDeck(ds.CreateFullDeck());
         testDeck.Enqueue(new Card(Suit.Spades, Rank.Ace));
 
         int testDeckCount = testDeck.Count();
@@ -149,64 +148,101 @@ public class DealerServiceTest
     [Fact]
     public void FailedShuffleDeckRandom()
     {
+        Queue<Card> testDeck1 = ds.CreateFullDeck();
 
+        testDeck1 = ds.ShuffleDeck(testDeck1, 0);
+        Queue<Card> testDeck2 = ds.ShuffleDeck(ds.CreateFullDeck(), 0);
+
+        Assert.NotEqual(testDeck1, testDeck2);
     }
 
     [Fact]
     public void SuccessShuffleDeckRandom()
     {
-        Queue<Card> testDeck = ds.CreateFullDeck();
-
-        foreach (Card card in testDeck)
+        foreach (Card card in _testDeck)
         {
             _outputHelper.WriteLine($"Test Card: {card}");
         }
 
-        Queue<Card> testShuffledDeck = ds.ShuffleDeck(testDeck, 0);
+        Queue<Card> testShuffledDeck = ds.ShuffleDeck(ds.CreateFullDeck(), 0);
 
         foreach (Card card in testShuffledDeck)
         {
             _outputHelper.WriteLine($"Shuffled Card: {card}");
         }
 
-        Assert.NotEqual(testDeck, testShuffledDeck);
+        Queue<Card> testShuffledDeck2 = ds.ShuffleDeck(ds.CreateFullDeck(), _deterministicSeedValue);
+
+        Assert.NotEqual(_testDeck, testShuffledDeck);
+        Assert.NotEqual(_testDeck, testShuffledDeck2);
+        Assert.NotEqual(testShuffledDeck, testShuffledDeck2);
     }
 
     [Fact]
     public void FailedShuffleDeckSeeded()
     {
+        Queue<Card> testDeck = ds.CreateFullDeck();
+
 
     }
-    
+
     [Fact]
     public void SuccessShuffleDeckSeeded()
     {
-        
+        Queue<Card> testDeck = ds.CreateFullDeck();
+    }
+
+    [Fact]
+    public void FailedShuffleDeckEmpty()
+    {
+        Queue<Card> testEmptyDeck = ds.CreateEmptyDeck();
+        testEmptyDeck = ds.ShuffleDeck(testEmptyDeck, 0);
+
+        Assert.Empty(testEmptyDeck);
+
+    
+        testEmptyDeck.Enqueue(new Card(Suit.Spades, Rank.Two));
+
+        Assert.NotEmpty(testEmptyDeck);
     }
 
     [Fact]
     public void SuccessPickACardFromTheTop()
     {
+        Queue<Card> testDeck = ds.CreateFullDeck();
+        Card pickedCard = ds.PickACardFromTheTop(testDeck);
 
+        _outputHelper.WriteLine($"Top Card of the Deck: {pickedCard.ToString()}");
 
-        // _outputHelper.WriteLine($"Top Card of the Deck: {testDeck.Dequeue().ToString()}");
+        Assert.Equal(Suit.Spades, pickedCard.suit);
+        Assert.Equal(Rank.Ace, pickedCard.rank);
     }
 
     [Fact]
     public void FailedPickACardFromTheTop()
     {
-
+        Queue<Card> testDeck = ds.CreateEmptyDeck();
+        Assert.Empty(testDeck);
+        Assert.Throws<InvalidOperationException>(() => ds.PickACardFromTheTop(testDeck));
     }
 
     [Fact]
     public void SuccessPickACardFromTheBottom()
     {
+        Queue<Card> testDeck = ds.CreateFullDeck();
+        Card pickedCard = ds.PickACardFromTheBottom(testDeck);
 
+        _outputHelper.WriteLine($"Top Card of the Deck: {pickedCard.ToString()}");
+
+        Assert.Equal(Suit.Hearts, pickedCard.suit);
+        Assert.Equal(Rank.King, pickedCard.rank);
     }
     
     [Fact]
     public void FailedPickACardFromTheBottom()
     {
-        
+        Queue<Card> testDeck = ds.CreateEmptyDeck();
+        Assert.Empty(testDeck);
+        Assert.Throws<InvalidOperationException>(() => ds.PickACardFromTheBottom(testDeck));
     }
 }

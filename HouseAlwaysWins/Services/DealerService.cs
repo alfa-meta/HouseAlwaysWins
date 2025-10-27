@@ -42,13 +42,11 @@ public class DealerService : IDealerService
     {
         Random rng;
 
-        if (seed > 0)
-        {
-            rng = new Random(seed); // Seed determined shuffle.
-        } else
-        {
-            rng = new Random(); // Undeterministic randomness
-        }
+        if (deck.Count < 2) return deck;
+
+        // If seed is bigger than 0 randomness is curated.
+        // Else the shuffling is truly random(-ish).
+        rng = (seed > 0) ? new Random(seed) : new Random();
 
         Card[] shuffleDeckArray = deck.ToArray();
 
@@ -65,28 +63,33 @@ public class DealerService : IDealerService
 
     public Card PickACardFromTheTop(Queue<Card> deck)
     {
+        if (deck.Count == 0)
+        {
+            throw new InvalidOperationException();
+        }
+
         Card pickedCard = deck.Dequeue();
         return pickedCard;
     }
 
     public Card PickACardFromTheBottom(Queue<Card> deck)
     {
+        if (deck.Count == 0)
+        {
+            throw new InvalidOperationException();
+        }
+
         Card pickedCard = deck.Last();
         return pickedCard;
     }
 
-    public void AssignDeckType()
-    {
-        throw new NotImplementedException();
-    }
-
     public int NumberOfCardsLeft(Queue<Card> deck)
     {
-        throw new NotImplementedException();
+        return deck.Count;
     }
 
-    public void PrintDeck()
+    public void PrintDeck(Queue<Card> deck)
     {
-        throw new NotImplementedException();
+        Console.WriteLine(deck.Count.ToString());
     }
 }
