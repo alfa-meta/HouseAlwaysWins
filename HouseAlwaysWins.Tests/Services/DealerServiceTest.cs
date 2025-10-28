@@ -56,6 +56,49 @@ public class DealerServiceTest
     }
 
     [Fact]
+    public void SuccessCountAllSuits()
+    {
+        Queue<Card> testDeck = ds.CreateFullDeck();
+        Card[] heartArray = Array.Empty<Card>();
+        Card[] diamondArray = Array.Empty<Card>();
+        Card[] clubsArray = Array.Empty<Card>();
+        Card[] spadesArray = Array.Empty<Card>();
+
+        Dictionary<Suit, int> counts = testDeck
+            .GroupBy(c => c.suit)
+            .ToDictionary(g => g.Key, g => g.Count());
+
+        Assert.Equal(13, counts[Suit.Hearts]);
+        Assert.Equal(13, counts[Suit.Diamonds]);
+        Assert.Equal(13, counts[Suit.Clubs]);
+        Assert.Equal(13, counts[Suit.Spades]);
+    }
+
+    [Fact]
+    public void SuccesssCountAllRanks()
+    {
+        Queue<Card> testDeck = ds.CreateFullDeck();
+        
+        Dictionary<Rank, int> counts = testDeck
+            .GroupBy(c => c.rank)
+            .ToDictionary(g => g.Key, g => g.Count());
+        
+        Assert.Equal(4, counts[Rank.Ace]);
+        Assert.Equal(4, counts[Rank.Two]);
+        Assert.Equal(4, counts[Rank.Three]);
+        Assert.Equal(4, counts[Rank.Four]);
+        Assert.Equal(4, counts[Rank.Five]);
+        Assert.Equal(4, counts[Rank.Six]);
+        Assert.Equal(4, counts[Rank.Seven]);
+        Assert.Equal(4, counts[Rank.Eight]);
+        Assert.Equal(4, counts[Rank.Nine]);
+        Assert.Equal(4, counts[Rank.Ten]);
+        Assert.Equal(4, counts[Rank.Jack]);
+        Assert.Equal(4, counts[Rank.Queen]);
+        Assert.Equal(4, counts[Rank.King]);
+    }
+
+    [Fact]
     public void SuccessNoDuplicatesFoundInDeck()
     {
         Queue<Card> testDeck = ds.CreateFullDeck();
