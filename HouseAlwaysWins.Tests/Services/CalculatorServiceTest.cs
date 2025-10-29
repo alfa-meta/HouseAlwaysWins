@@ -21,4 +21,13 @@ public class CalculatorServiceTest
         _outputHelper = output;
         _testDeck = ds.CreateFullDeck();
     }
+
+
+    [Fact]
+    public void SuccessEmptyHand()
+    {
+        Queue<Card> testDeck = ds.CreateFullDeck;
+        Player player1 = new Player();
+        player1.hand;
+    }
 }

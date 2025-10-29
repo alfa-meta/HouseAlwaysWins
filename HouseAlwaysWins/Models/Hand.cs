@@ -11,8 +11,8 @@ public class Hand : IHand
     public int _handValue { get; private set; }
     public HandState _handState { get; private set; }
 
-    private static IDealerService _ds;
-    private static ICalculatorService _cs;
+    private IDealerService _ds;
+    private ICalculatorService _cs;
 
     public Hand(IDealerService dealerService, ICalculatorService calculatorService)
     {
@@ -27,6 +27,7 @@ public class Hand : IHand
 
     public int CalculateHandValue()
     {
+        _handState = EvaluateHandState();
         int _handValue = _cs.EvaluateHand(this);
         return _handValue;
     }
@@ -45,5 +46,62 @@ public class Hand : IHand
     public void EmptyPlayersHand()
     {
         _cardsInHand = Array.Empty<Card>();
+        _handState = HandState.Empty;
+        _handValue = 0;
+    }
+
+    public HandState EvaluateHandState()
+    {
+        if (_handValue == 0 || _cardsInHand.Count() == 0)
+        {
+            _handState = SetHandStateToEmpty();
+        }
+
+        if (_handValue > 21)
+        {
+            _handState = SetHandStateToEmpty();
+        }
+
+        if (_handValue == 21 && _cardsInHand.Count() == 2)
+        {
+            _handState = SetHandStateToBlackjack();
+        }
+        
+        return _handState;   
+    }
+
+    public HandState SetHandStateToEmpty()
+    {
+        return HandState.Empty;
+    }
+
+    public HandState SetHandStateToBlackjack()
+    {
+        return HandState.Blackjack;
+    }
+
+    public HandState SetHandStateToBust()
+    {
+        return HandState.Bust;
+    }
+
+    public HandState SetHandStateToLive()
+    {
+        return HandState.Live;
+    }
+
+    public HandState SetHandStateToStand()
+    {
+        return HandState.Stand;
+    }
+
+    public HandState SetHandStateToSurrendered()
+    {
+        return HandState.Surrendered;
+    }
+
+    public HandState SetHandStateToResolved()
+    {
+        return HandState.Resolved;
     }
 }

@@ -9,6 +9,7 @@ public class CalculatorService : ICalculatorService
     public int EvaluateHand(IHand hand)
     {
         int handValue = 0;
+        int numberOfAces = 0;
 
         foreach (Card card in hand._cardsInHand)
         {
@@ -16,6 +17,7 @@ public class CalculatorService : ICalculatorService
             {
                 case Rank.Ace:
                     handValue += 11;
+                    numberOfAces += 1;
                     break;
                 case Rank.King:
                     handValue += 10;
@@ -32,9 +34,12 @@ public class CalculatorService : ICalculatorService
             }
         }
 
-        if (handValue > 21)
+        for (int i = 0; numberOfAces > i; i++)
         {
-            handValue -= 10;
+            if (handValue > 21)
+            {
+                handValue -= 10;
+            }
         }
 
         return handValue;

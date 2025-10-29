@@ -6,7 +6,7 @@ namespace HouseAlwaysWins.Models;
 /// <remarks>
 /// <list type="bullet">
 /// <item><description><b>Empty</b> - No cards in hand.</description></item>
-/// <item><description><b>BlackJack</b> – Ace + 10.</description></item>
+/// <item><description><b>Blackjack</b> – Ace + 10.</description></item>
 /// <item><description><b>Bust</b> – Total hand value over 21.</description></item>
 /// <item><description><b>Live</b> – Total hand value under 21; player can still make moves.</description></item>
 /// <item><description><b>Stand</b> – Player stands with current hand until round ends.</description></item>
@@ -17,7 +17,7 @@ namespace HouseAlwaysWins.Models;
 
 public enum HandState
 {
-    Empty, BlackJack, Bust, Live, Stand, Surrendered, Resolved
+    Empty, Blackjack, Bust, Live, Stand, Surrendered, Resolved
 }
 
 
