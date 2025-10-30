@@ -2,74 +2,45 @@ using HouseAlwaysWins.Services;
 
 namespace HouseAlwaysWins.Models;
 
-
-
 public class Hand : IHand
 {
     public Guid _handId { get; private set; }
-    public Card[] _cardsInHand { get; private set; }
-    public int _handValue { get; private set; }
-    public HandState _handState { get; private set; }
-
-    private IDealerService _ds;
-    private ICalculatorService _cs;
-
-    public Hand(IDealerService dealerService, ICalculatorService calculatorService)
+    public Card[] _cardsInHand { get; set; }
+    public int _cardCount { get; set; }
+    public int _handValue { get; set; }
+    public HandState _handState { get;  set; }
+    public Hand()
     {
         _handId = Guid.NewGuid();
         _cardsInHand = Array.Empty<Card>();
+        _cardCount = 0;
         _handValue = 0;
         _handState = HandState.Empty;
-
-        _ds = dealerService;
-        _cs = calculatorService;
-    }
-
-    public int CalculateHandValue()
-    {
-        _handState = EvaluateHandState();
-        int _handValue = _cs.EvaluateHand(this);
-        return _handValue;
-    }
-
-    public int GetCardCount()
-    {
-        return _cardsInHand.Count();
     }
 
     public void AddCardToHand(Card card)
     {
         _cardsInHand.Append(card);
-        CalculateHandValue();
+        _cardCount = 0;
     }
 
     public void EmptyPlayersHand()
     {
         _cardsInHand = Array.Empty<Card>();
         _handState = HandState.Empty;
+        _cardCount = 0;
         _handValue = 0;
     }
 
-    public HandState EvaluateHandState()
+    public int GetCardCount()
     {
-        if (_handValue == 0 || _cardsInHand.Count() == 0)
-        {
-            _handState = SetHandStateToEmpty();
-        }
-
-        if (_handValue > 21)
-        {
-            _handState = SetHandStateToEmpty();
-        }
-
-        if (_handValue == 21 && _cardsInHand.Count() == 2)
-        {
-            _handState = SetHandStateToBlackjack();
-        }
-        
-        return _handState;   
+        return _cardCount;
     }
 
+    public HandState GetHandState()
+    {
+        return _handState;
+    }
     public HandState SetHandStateToEmpty()
     {
         return HandState.Empty;

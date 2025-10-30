@@ -12,7 +12,8 @@ public interface IHand
     HandState _handState { get; }
     void AddCardToHand(Card card);
     void EmptyPlayersHand();
-    HandState EvaluateHandState();
+    int GetCardCount();
+    HandState GetHandState();
     HandState SetHandStateToEmpty();
     HandState SetHandStateToBlackjack();
     HandState SetHandStateToBust();
@@ -20,6 +21,4 @@ public interface IHand
     HandState SetHandStateToStand();
     HandState SetHandStateToSurrendered();
     HandState SetHandStateToResolved();
-    public int CalculateHandValue();
-    public int GetCardCount();
 }
