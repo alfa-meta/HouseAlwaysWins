@@ -13,6 +13,7 @@ public interface IHand
     void AddCardToHand(Card card);
     void EmptyPlayersHand();
     int GetCardCount();
+    Card[] GetAllCardsInHand();
     HandState GetHandState();
     HandState SetHandStateToEmpty();
     HandState SetHandStateToBlackjack();

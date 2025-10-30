@@ -26,8 +26,27 @@ public class CalculatorServiceTest
     [Fact]
     public void SuccessEmptyHand()
     {
-        Queue<Card> testDeck = ds.CreateFullDeck;
-        Player player1 = new Player();
-        player1.hand;
+        Queue<Card> testDeck = ds.CreateEmptyDeck();
+        IPlayer player1 = new Player();
+
+        Assert.Equal(0, player1.GetCardCountInHand());
+    }
+
+    // TODO 
+    [Fact]
+    public void SuccessAddCardToHandForPlayer()
+    {
+        Queue<Card> testDeck = ds.CreateFullDeck();
+        IPlayer player1 = new Player();
+        Card testDequeuedCard = testDeck.Dequeue();
+        player1.AddCardToHand(testDequeuedCard);
+
+        Card testCard = new Card(Suit.Spades, Rank.Ace);
+        Card[] testPlayerHandCards = player1.GetAllCards();
+
+        _outputHelper.WriteLine(testPlayerHandCards.Count().ToString());
+
+        Assert.Equal(1, player1.GetCardCountInHand());
+        // Assert.Equal(testCard, testPlayerHandCards[0]);
     }
 }

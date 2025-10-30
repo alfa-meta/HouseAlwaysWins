@@ -3,16 +3,31 @@ namespace HouseAlwaysWins.Models;
 
 public class Player : IPlayer
 {
-    public Guid _id { get; private set; }
+    public Guid _playerId { get; private set; }
     public IHand _hand { get;}
     public string _totalBank { get; private set; }
     public string _startingMoney { get; private set; } = "500";
 
     public Player()
     {
-        _id = Guid.NewGuid();
+        _playerId = Guid.NewGuid();
         _hand = new Hand();
         _totalBank = _startingMoney;
+    }
+
+
+    public void AddCardToHand(Card card)
+    {
+        _hand.AddCardToHand(card);
+    }
+    public int GetCardCountInHand()
+    {
+        return _hand.GetCardCount();
+    }
+
+    public Card[] GetAllCards()
+    {
+        return _hand._cardsInHand;
     }
 
     public HandState EvaluateHandState()
@@ -31,8 +46,8 @@ public class Player : IPlayer
         {
             _hand.SetHandStateToBlackjack();
         }
-        
-        return _hand._handState;   
+
+        return _hand._handState;
     }
 
     public string SetStartingMoney(string startingMoney)
@@ -40,7 +55,7 @@ public class Player : IPlayer
         try
         {
             float floatStartingMoney = float.Parse(startingMoney);
-            
+
             if (floatStartingMoney <= 1.00)
             {
                 throw new ArgumentOutOfRangeException(nameof(floatStartingMoney), "Value must be greater than 1.00");

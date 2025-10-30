@@ -21,7 +21,7 @@ public class Hand : IHand
     public void AddCardToHand(Card card)
     {
         _cardsInHand.Append(card);
-        _cardCount = 0;
+        _cardCount += 1;
     }
 
     public void EmptyPlayersHand()
@@ -35,6 +35,11 @@ public class Hand : IHand
     public int GetCardCount()
     {
         return _cardCount;
+    }
+
+    public Card[] GetAllCardsInHand()
+    {
+        return _cardsInHand;
     }
 
     public HandState GetHandState()
