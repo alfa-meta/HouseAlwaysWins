@@ -11,7 +11,7 @@ public class CalculatorService : ICalculatorService
         int handValue = 0;
         int numberOfAces = 0;
 
-        foreach (Card card in hand._cardsInHand)
+        foreach (Card card in hand.CardsInHand)
         {
             switch (card.rank)
             {

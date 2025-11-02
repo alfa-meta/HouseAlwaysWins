@@ -3,51 +3,51 @@ namespace HouseAlwaysWins.Models;
 
 public class Player : IPlayer
 {
-    public Guid _playerId { get; private set; }
-    public IHand _hand { get;}
-    public string _totalBank { get; private set; }
-    public string _startingMoney { get; private set; } = "500";
+    public Guid PlayerId { get; private set; }
+    public IHand Hand { get;}
+    public string TotalBank { get; private set; }
+    public string StartingMoney { get; private set; } = "500";
 
     public Player()
     {
-        _playerId = Guid.NewGuid();
-        _hand = new Hand();
-        _totalBank = _startingMoney;
+        PlayerId = Guid.NewGuid();
+        Hand = new Hand();
+        TotalBank = StartingMoney;
     }
 
 
     public void AddCardToHand(Card card)
     {
-        _hand.AddCardToHand(card);
+        Hand.AddCardToHand(card);
     }
     public int GetCardCountInHand()
     {
-        return _hand.GetCardCount();
+        return Hand.GetCardCount();
     }
 
     public Card[] GetAllCards()
     {
-        return _hand._cardsInHand;
+        return Hand.CardsInHand;
     }
 
     public HandState EvaluateHandState()
     {
-        if (_hand._handValue == 0 || _hand.GetCardCount() == 0)
+        if (Hand.HandValue == 0 || Hand.GetCardCount() == 0)
         {
-            _hand.SetHandStateToEmpty();
+            Hand.SetHandStateToEmpty();
         }
 
-        if (_hand._handValue > 21)
+        if (Hand.HandValue > 21)
         {
-            _hand.SetHandStateToBust();
+            Hand.SetHandStateToBust();
         }
 
-        if (_hand._handValue == 21 && _hand.GetCardCount() == 2)
+        if (Hand.HandValue == 21 && Hand.GetCardCount() == 2)
         {
-            _hand.SetHandStateToBlackjack();
+            Hand.SetHandStateToBlackjack();
         }
 
-        return _hand._handState;
+        return Hand.HandState;
     }
 
     public string SetStartingMoney(string startingMoney)

@@ -4,47 +4,47 @@ namespace HouseAlwaysWins.Models;
 
 public class Hand : IHand
 {
-    public Guid _handId { get; private set; }
-    public Card[] _cardsInHand { get; set; }
-    public int _cardCount { get; set; }
-    public int _handValue { get; set; }
-    public HandState _handState { get;  set; }
+    public Guid HandId { get; private set; }
+    public Card[] CardsInHand { get; set; }
+    public int CardCount { get; set; }
+    public int HandValue { get; set; }
+    public HandState HandState { get;  set; }
     public Hand()
     {
-        _handId = Guid.NewGuid();
-        _cardsInHand = Array.Empty<Card>();
-        _cardCount = 0;
-        _handValue = 0;
-        _handState = HandState.Empty;
+        HandId = Guid.NewGuid();
+        CardsInHand = Array.Empty<Card>();
+        CardCount = 0;
+        HandValue = 0;
+        HandState = HandState.Empty;
     }
 
-    public void AddCardToHand(Card card)
+    public Card[] AddCardToHand(Card card)
     {
-        _cardsInHand.Append(card);
-        _cardCount += 1;
+        CardCount += 1;
+        return CardsInHand.Append(card).ToArray();
     }
 
     public void EmptyPlayersHand()
     {
-        _cardsInHand = Array.Empty<Card>();
-        _handState = HandState.Empty;
-        _cardCount = 0;
-        _handValue = 0;
+        CardsInHand = Array.Empty<Card>();
+        HandState = HandState.Empty;
+        CardCount = 0;
+        HandValue = 0;
     }
 
     public int GetCardCount()
     {
-        return _cardCount;
+        return CardCount;
     }
 
     public Card[] GetAllCardsInHand()
     {
-        return _cardsInHand;
+        return CardsInHand;
     }
 
     public HandState GetHandState()
     {
-        return _handState;
+        return HandState;
     }
     public HandState SetHandStateToEmpty()
     {
