@@ -8,6 +8,7 @@ public interface IHand
 {
     Guid HandId { get; }
     Card[] CardsInHand { get; }
+    int CardCount { get; }
     int HandValue { get; }
     HandState HandState { get; }
     Card[] AddCardToHand(Card card);

@@ -1,11 +1,20 @@
 using Xunit;
+using Xunit.Abstractions;
 using HouseAlwaysWins.Models;
+using System.ComponentModel.DataAnnotations;
 
-public class CardTests
+namespace HouseAlwaysWins.Tests;
+public class CardTest
 {
 
+    private readonly ITestOutputHelper _outputHelper;
     static Card TwoOfHearts = new Card(Suit.Hearts, Rank.Two);
     static Card AceOfSpades = new Card(Suit.Spades, Rank.Ace);
+
+    public CardTest(ITestOutputHelper output)
+    {
+        _outputHelper = output;
+    }
 
     [Fact]
     public void SuccessCorrectRank()
