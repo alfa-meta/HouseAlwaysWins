@@ -12,15 +12,11 @@ public class DealerServiceTest
     private readonly ITestOutputHelper _outputHelper;
     private readonly Queue<Card> _testDeck;
     private readonly int _deterministicSeedValue = 7;
-    // private readonly Queue<Card> _smallStockDeck;
-    // private readonly Queue<Card> _mediumStockDeck;
-    // private readonly Queue<Card> _largeStockDeck;
 
     public DealerServiceTest(ITestOutputHelper output)
     {
         _outputHelper = output;
         _testDeck = ds.CreateFullDeck();
-        // _smallStockDeck = ds.CreateFullDeck();
     }
 
     [Fact]

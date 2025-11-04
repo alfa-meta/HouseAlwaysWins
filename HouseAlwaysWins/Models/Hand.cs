@@ -20,8 +20,9 @@ public class Hand : IHand
 
     public Card[] AddCardToHand(Card card)
     {
-        CardCount += 1;
-        return CardsInHand.Append(card).ToArray();
+        CardsInHand = CardsInHand.Append(card).ToArray();
+        CardCount = CardsInHand.Length;
+        return CardsInHand;
     }
 
     public void EmptyPlayersHand()
@@ -48,36 +49,43 @@ public class Hand : IHand
     }
     public HandState SetHandStateToEmpty()
     {
-        return HandState.Empty;
+        HandState = HandState.Empty;
+        return HandState;
     }
 
     public HandState SetHandStateToBlackjack()
     {
-        return HandState.Blackjack;
+        HandState = HandState.Blackjack;
+        return HandState;
     }
 
     public HandState SetHandStateToBust()
     {
-        return HandState.Bust;
+        HandState = HandState.Bust;
+        return HandState;
     }
 
     public HandState SetHandStateToLive()
     {
-        return HandState.Live;
+        HandState = HandState.Live;
+        return HandState;
     }
 
     public HandState SetHandStateToStand()
     {
-        return HandState.Stand;
+        HandState = HandState.Stand;
+        return HandState;
     }
 
     public HandState SetHandStateToSurrendered()
     {
-        return HandState.Surrendered;
+        HandState = HandState.Surrendered;
+        return HandState;
     }
 
     public HandState SetHandStateToResolved()
     {
-        return HandState.Resolved;
+        HandState = HandState.Resolved;
+        return HandState;
     }
 }
