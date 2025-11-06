@@ -33,11 +33,12 @@ public class HandTest
     public void SuccessAddCardToHand()
     {
         IHand testHand = new Hand();
+        Assert.Equal(HandState.Empty, testHand.GetHandState());
 
         Card[] testCardArray = testHand.AddCardToHand(testCardKingOfClubs);
 
         Assert.NotEmpty(testCardArray);
-        Assert.Equal(HandState.Empty, testHand.GetHandState());
+        Assert.Equal(HandState.Live, testHand.GetHandState());
         Assert.Equal(testCardKingOfClubs.GetType(), testCardArray[0].GetType());
         Assert.Equal(Suit.Clubs, testCardArray[0].suit);
         Assert.Equal(Rank.King, testCardArray[0].rank);
@@ -57,7 +58,7 @@ public class HandTest
 
         _outputHelper.WriteLine(string.Join(", ", testAllCardsFromHand.Select(c => $"{c.rank} of {c.suit}")));
 
-        Assert.Equal(1, testCardArray.Count());
+        Assert.Single(testCardArray);
         Assert.Equal(2, testHand.GetCardCount());
         Assert.Equal(Suit.Clubs, testAllCardsFromHand[0].suit);
         Assert.Equal(Rank.King, testAllCardsFromHand[0].rank);
@@ -66,17 +67,21 @@ public class HandTest
     }
 
     [Fact]
-    public void SuccessEmptyHand()
+    public void SuccessHandIsEmpty()
     {
         IHand testEmptyHand = new Hand();
 
-
         Assert.Equal(HandState.Empty, testEmptyHand.GetHandState());
+        Assert.Empty(testEmptyHand.GetAllCardsInHand());
     }
     
     [Fact]
-    public void FailedEmptyHand()
+    public void FailedHandIsEmpty()
     {
-        
+        IHand testEmptyHand = new Hand();
+        testEmptyHand.AddCardToHand(testCardKingOfClubs);
+
+        Assert.Equal(HandState.Live, testEmptyHand.GetHandState());
+        Assert.NotEqual(0, testEmptyHand.GetAllCardsInHand().Count());
     }
 }

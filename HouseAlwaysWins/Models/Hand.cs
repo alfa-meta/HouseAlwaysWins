@@ -20,6 +20,8 @@ public class Hand : IHand
 
     public Card[] AddCardToHand(Card card)
     {
+        this.SetHandStateToLive();
+
         CardsInHand = CardsInHand.Append(card).ToArray();
         CardCount = CardsInHand.Length;
         return CardsInHand;
@@ -33,7 +35,7 @@ public class Hand : IHand
         HandValue = 0;
     }
 
-    public int GetCardCount()
+    public int GetCardCount() 
     {
         return CardCount;
     }
