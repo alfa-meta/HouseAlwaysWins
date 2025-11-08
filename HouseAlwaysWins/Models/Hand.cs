@@ -49,8 +49,14 @@ public class Hand : IHand
     {
         return HandState;
     }
+
+    // T
     public HandState SetHandStateToEmpty()
     {
+        if (CardsInHand.Count() > 0)
+        {
+            return HandState.Live;
+        }
         HandState = HandState.Empty;
         return HandState;
     }

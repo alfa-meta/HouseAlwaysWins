@@ -74,7 +74,7 @@ public class HandTest
         Assert.Equal(HandState.Empty, testEmptyHand.GetHandState());
         Assert.Empty(testEmptyHand.GetAllCardsInHand());
     }
-    
+
     [Fact]
     public void FailedHandIsEmpty()
     {
@@ -82,6 +82,25 @@ public class HandTest
         testEmptyHand.AddCardToHand(testCardKingOfClubs);
 
         Assert.Equal(HandState.Live, testEmptyHand.GetHandState());
-        Assert.NotEqual(0, testEmptyHand.GetAllCardsInHand().Count());
+        Assert.NotEmpty(testEmptyHand.GetAllCardsInHand());
+    }
+
+    [Fact]
+    public void SuccessGetCorrectHandState()
+    {
+        IHand testHand = new Hand();
+
+        // Test Default state
+        Assert.Equal(HandState.Empty, testHand.GetHandState());
+        
+        // Test Blackjack state
+        testHand.SetHandStateToBlackjack();
+        Assert.Equal(HandState.Blackjack, testHand.GetHandState());
+
+        // Test Handstate to empty 
+        testHand.SetHandStateToEmpty();
+        Assert.Equal(HandState.Empty, testHand.GetHandState());
+
+        // 
     }
 }
