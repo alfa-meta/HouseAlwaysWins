@@ -27,7 +27,7 @@ public class CalculatorServiceTest
     public void SuccessEmptyHand()
     {
         Queue<Card> testDeck = ds.CreateEmptyDeck();
-        IPlayer player1 = new Player();
+        IPlayer player1 = new Player(cs);
 
         Assert.Equal(0, player1.GetCardCountInHand());
     }
@@ -37,7 +37,7 @@ public class CalculatorServiceTest
     public void SuccessAddCardToHandForPlayer()
     {
         Queue<Card> testDeck = ds.CreateFullDeck();
-        IPlayer player1 = new Player();
+        IPlayer player1 = new Player(cs);
         Card testDequeuedCard = testDeck.Dequeue();
         player1.AddCardToHand(testDequeuedCard);
 

@@ -4,13 +4,17 @@ namespace HouseAlwaysWins.Models;
 
 public class Hand : IHand
 {
+    private readonly ICalculatorService _calculatorService;
     public Guid HandId { get; private set; }
-    public Card[] CardsInHand { get; set; }
-    public int CardCount { get; set; }
-    public int HandValue { get; set; }
-    public HandState HandState { get;  set; }
-    public Hand()
+    public Card[] CardsInHand { get; private set; }
+    public int CardCount { get; private set; }
+    public int HandValue { get; private set; }
+    public HandState HandState { get; private set; }
+    public Hand(ICalculatorService calculatorService)
     {
+        ArgumentNullException.ThrowIfNull(calculatorService);
+        _calculatorService = calculatorService;
+
         HandId = Guid.NewGuid();
         CardsInHand = Array.Empty<Card>();
         CardCount = 0;
@@ -20,10 +24,11 @@ public class Hand : IHand
 
     public Card[] AddCardToHand(Card card)
     {
-        this.SetHandStateToLive();
+        SetHandStateToLive();
 
         CardsInHand = CardsInHand.Append(card).ToArray();
         CardCount = CardsInHand.Length;
+        HandValue = _calculatorService.EvaluateHand(this);
         return CardsInHand;
     }
 
@@ -35,65 +40,26 @@ public class Hand : IHand
         HandValue = 0;
     }
 
-    public int GetCardCount() 
-    {
-        return CardCount;
-    }
+    public int GetCardCount() => CardCount;
+    public Card[] GetAllCardsInHand() => CardsInHand;
+    public HandState GetHandState() => HandState;
 
-    public Card[] GetAllCardsInHand()
-    {
-        return CardsInHand;
-    }
-
-    public HandState GetHandState()
-    {
-        return HandState;
-    }
-
-    // T
     public HandState SetHandStateToEmpty()
     {
-        if (CardsInHand.Count() > 0)
+        if (CardsInHand.Length > 0)
         {
-            return HandState.Live;
+            // Don't change HandState if Cards exist
+            return HandState;
         }
+
         HandState = HandState.Empty;
         return HandState;
     }
 
-    public HandState SetHandStateToBlackjack()
-    {
-        HandState = HandState.Blackjack;
-        return HandState;
-    }
-
-    public HandState SetHandStateToBust()
-    {
-        HandState = HandState.Bust;
-        return HandState;
-    }
-
-    public HandState SetHandStateToLive()
-    {
-        HandState = HandState.Live;
-        return HandState;
-    }
-
-    public HandState SetHandStateToStand()
-    {
-        HandState = HandState.Stand;
-        return HandState;
-    }
-
-    public HandState SetHandStateToSurrendered()
-    {
-        HandState = HandState.Surrendered;
-        return HandState;
-    }
-
-    public HandState SetHandStateToResolved()
-    {
-        HandState = HandState.Resolved;
-        return HandState;
-    }
+    public HandState SetHandStateToBlackjack() { HandState = HandState.Blackjack; return HandState; }
+    public HandState SetHandStateToBust() { HandState = HandState.Bust; return HandState; }
+    public HandState SetHandStateToLive() { HandState = HandState.Live; return HandState; }
+    public HandState SetHandStateToStand() { HandState = HandState.Stand; return HandState; }
+    public HandState SetHandStateToSurrendered() { HandState = HandState.Surrendered; return HandState; }
+    public HandState SetHandStateToResolved() { HandState = HandState.Resolved; return HandState; }
 }

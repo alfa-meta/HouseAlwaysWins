@@ -1,17 +1,24 @@
+using HouseAlwaysWins.Services;
+
 namespace HouseAlwaysWins.Models;
+
 
 
 public class Player : IPlayer
 {
+    private readonly ICalculatorService _calculatorService;
     public Guid PlayerId { get; private set; }
     public IHand Hand { get;}
     public string TotalBank { get; private set; }
     public string StartingMoney { get; private set; } = "500";
 
-    public Player()
+    public Player(ICalculatorService calculatorService)
     {
+        ArgumentNullException.ThrowIfNull(calculatorService);
+        _calculatorService = calculatorService;
+
         PlayerId = Guid.NewGuid();
-        Hand = new Hand();
+        Hand = new Hand(_calculatorService);
         TotalBank = StartingMoney;
     }
 
