@@ -32,6 +32,11 @@ public class Player : IPlayer
         return Hand.GetCardCount();
     }
 
+    public int GetCardValueInHand()
+    {
+        return Hand.HandValue;
+    }
+
     public Card[] GetAllCards()
     {
         return Hand.CardsInHand;
@@ -80,5 +85,10 @@ public class Player : IPlayer
             // Number is too large.
             return "500";
         }
+    }
+
+    public HandState GetHandState()
+    {
+        return Hand.HandState;
     }
 }

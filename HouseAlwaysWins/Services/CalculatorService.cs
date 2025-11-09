@@ -44,4 +44,33 @@ public class CalculatorService : ICalculatorService
 
         return handValue;
     }
+
+    public Player[] EvaluateWinner(Player[] listOfPlayers)
+    {
+        // Get highest score
+        Player[] winnerList = Array.Empty<Player>();
+        int highestScore = 0;
+        int playerCardValue;
+        HandState playerHandState;
+
+        foreach (Player player in listOfPlayers)
+        {
+            playerCardValue = player.GetCardValueInHand();
+            playerHandState = player.GetHandState();
+            if ((player.GetCardValueInHand() > highestScore) 
+            && playerHandState != HandState.Bust) highestScore = playerCardValue;
+        }
+
+        // All players that match the highest score without being bust, win.
+        foreach (Player player in listOfPlayers)
+        {
+            playerCardValue = player.GetCardValueInHand();
+            if (playerCardValue == highestScore)
+            {
+                winnerList.Append(player).ToArray();
+            }
+        }
+        
+        return winnerList;
+    }
 }
