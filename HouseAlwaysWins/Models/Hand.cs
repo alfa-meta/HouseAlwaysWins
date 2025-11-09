@@ -24,11 +24,27 @@ public class Hand : IHand
 
     public Card[] AddCardToHand(Card card)
     {
+        if (CardsInHand.Contains(card))
+        {
+            throw new InvalidOperationException($"Card {card} is already in hand.");
+        }
+
         SetHandStateToLive();
 
         CardsInHand = CardsInHand.Append(card).ToArray();
         CardCount = CardsInHand.Length;
         HandValue = _calculatorService.EvaluateHand(this);
+
+        if (HandValue == 21 && CardCount == 2)
+        {
+            SetHandStateToBlackjack();
+        }
+
+        if (HandValue >= 22)
+        {
+            SetHandStateToBust();
+        }
+
         return CardsInHand;
     }
 

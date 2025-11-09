@@ -12,8 +12,10 @@ public class HandTest
 
     private readonly ITestOutputHelper _outputHelper;
     private readonly ICalculatorService _calculatorService;
+    private static Card testCardAceOfHearts = new Card(Suit.Hearts, Rank.Ace);
     private static Card testCardKingOfClubs = new Card(Suit.Clubs, Rank.King);
     private static Card testCardThreeOfDiamonds = new Card(Suit.Diamonds, Rank.Three);
+    private static Card testCardJackOfSpades = new Card(Suit.Spades, Rank.Jack);
     public HandTest(ITestOutputHelper output)
     {
         _outputHelper = output;
@@ -102,7 +104,7 @@ public class HandTest
 
         // Test Default state
         Assert.Equal(HandState.Empty, testHand.GetHandState());
-        
+
         // Test Blackjack state
         testHand.SetHandStateToBlackjack();
         Assert.Equal(HandState.Blackjack, testHand.GetHandState());
@@ -130,5 +132,150 @@ public class HandTest
         // Test Handstate Live
         testHand.SetHandStateToLive();
         Assert.Equal(HandState.Live, testHand.GetHandState());
+    }
+
+    [Fact]
+    public void SuccessSetHandToBlackjack()
+    {
+        IHand testHand = new Hand(_calculatorService);
+
+        testHand.AddCardToHand(testCardAceOfHearts);
+        testHand.AddCardToHand(testCardKingOfClubs);
+
+        Assert.Equal(21, testHand.HandValue);
+        Assert.Equal(2, testHand.CardCount);
+        Assert.Equal(HandState.Blackjack, testHand.GetHandState());
+    }
+
+    [Fact]
+    public void SuccessSetHandToBust()
+    {
+        IHand testHand = new Hand(_calculatorService);
+
+        testHand.AddCardToHand(testCardAceOfHearts);
+        testHand.AddCardToHand(testCardKingOfClubs);
+        testHand.AddCardToHand(testCardThreeOfDiamonds);
+        testHand.AddCardToHand(testCardJackOfSpades);
+
+        Assert.Equal(24, testHand.HandValue);
+        Assert.Equal(4, testHand.CardCount);
+        Assert.Equal(HandState.Bust, testHand.HandState);
+    }
+
+    [Fact]
+    public void SuccessLegalMaximumHand21()
+    {
+        IHand testHand = new Hand(_calculatorService);
+
+        testHand.AddCardToHand(testCardAceOfHearts);
+        testHand.AddCardToHand(new Card(Suit.Clubs, Rank.Ace));
+        testHand.AddCardToHand(new Card(Suit.Diamonds, Rank.Ace));
+        testHand.AddCardToHand(new Card(Suit.Spades, Rank.Ace));
+
+        Assert.Equal(HandState.Live, testHand.HandState);
+        Assert.Equal(14, testHand.HandValue);
+        Assert.Equal(4, testHand.CardCount);
+
+
+        testHand.AddCardToHand(new Card(Suit.Hearts, Rank.Two));
+        testHand.AddCardToHand(new Card(Suit.Clubs, Rank.Two));
+        testHand.AddCardToHand(new Card(Suit.Diamonds, Rank.Two));
+
+        Assert.Equal(HandState.Live, testHand.HandState);
+        Assert.Equal(20, testHand.HandValue);
+        Assert.Equal(7, testHand.CardCount);
+
+
+        testHand.AddCardToHand(new Card(Suit.Spades, Rank.Two));
+
+        Assert.Equal(HandState.Live, testHand.HandState);
+        Assert.Equal(12, testHand.HandValue);
+        Assert.Equal(8, testHand.CardCount);
+
+
+        testHand.AddCardToHand(new Card(Suit.Hearts, Rank.Three));
+        testHand.AddCardToHand(new Card(Suit.Clubs, Rank.Three));
+        testHand.AddCardToHand(new Card(Suit.Diamonds, Rank.Three));
+
+        Assert.Equal(21, testHand.HandValue);
+        Assert.Equal(HandState.Live, testHand.HandState);
+        Assert.Equal(11, testHand.CardCount);
+    }
+
+    [Fact]
+    public void SuccessLegalMaximumHandNon21NorBust()
+    {
+        IHand testHand = new Hand(_calculatorService);
+
+        testHand.AddCardToHand(testCardAceOfHearts);
+        testHand.AddCardToHand(new Card(Suit.Clubs, Rank.Ace));
+        testHand.AddCardToHand(new Card(Suit.Diamonds, Rank.Ace));
+        testHand.AddCardToHand(new Card(Suit.Spades, Rank.Ace));
+
+        Assert.Equal(HandState.Live, testHand.HandState);
+        Assert.Equal(14, testHand.HandValue);
+        Assert.Equal(4, testHand.CardCount);
+
+
+        testHand.AddCardToHand(new Card(Suit.Hearts, Rank.Two));
+        testHand.AddCardToHand(new Card(Suit.Clubs, Rank.Two));
+        testHand.AddCardToHand(new Card(Suit.Diamonds, Rank.Two));
+
+        Assert.Equal(HandState.Live, testHand.HandState);
+        Assert.Equal(20, testHand.HandValue);
+        Assert.Equal(7, testHand.CardCount);
+
+
+        testHand.AddCardToHand(new Card(Suit.Spades, Rank.Two));
+
+        Assert.Equal(HandState.Live, testHand.HandState);
+        Assert.Equal(12, testHand.HandValue);
+        Assert.Equal(8, testHand.CardCount);
+
+
+        testHand.AddCardToHand(new Card(Suit.Hearts, Rank.Three));
+        testHand.AddCardToHand(new Card(Suit.Clubs, Rank.Three));
+
+        Assert.Equal(HandState.Live, testHand.HandState);
+        Assert.Equal(18, testHand.HandValue);
+        Assert.Equal(10, testHand.CardCount);
+    }
+
+    [Fact]
+    public void SuccessLegalMaximumHandBust()
+    {
+        IHand testHand = new Hand(_calculatorService);
+
+        testHand.AddCardToHand(testCardAceOfHearts);
+        testHand.AddCardToHand(new Card(Suit.Clubs, Rank.Ace));
+        testHand.AddCardToHand(new Card(Suit.Diamonds, Rank.Ace));
+        testHand.AddCardToHand(new Card(Suit.Spades, Rank.Ace));
+
+        Assert.Equal(HandState.Live, testHand.HandState);
+        Assert.Equal(14, testHand.HandValue);
+        Assert.Equal(4, testHand.CardCount);
+
+        testHand.AddCardToHand(new Card(Suit.Hearts, Rank.Two));
+        testHand.AddCardToHand(new Card(Suit.Clubs, Rank.Two));
+        testHand.AddCardToHand(new Card(Suit.Diamonds, Rank.Two));
+
+        Assert.Equal(HandState.Live, testHand.HandState);
+        Assert.Equal(20, testHand.HandValue);
+        Assert.Equal(7, testHand.CardCount);
+
+        testHand.AddCardToHand(new Card(Suit.Spades, Rank.Two));
+
+        Assert.Equal(HandState.Live, testHand.HandState);
+        Assert.Equal(12, testHand.HandValue);
+        Assert.Equal(8, testHand.CardCount);
+
+        testHand.AddCardToHand(new Card(Suit.Hearts, Rank.Three));
+        testHand.AddCardToHand(new Card(Suit.Clubs, Rank.Three));
+        testHand.AddCardToHand(new Card(Suit.Diamonds, Rank.Three));
+        testHand.AddCardToHand(new Card(Suit.Spades, Rank.Three));
+
+        Assert.Equal(HandState.Bust, testHand.HandState);
+        Assert.Equal(24, testHand.HandValue);
+        Assert.Equal(12, testHand.CardCount);
     }
 }

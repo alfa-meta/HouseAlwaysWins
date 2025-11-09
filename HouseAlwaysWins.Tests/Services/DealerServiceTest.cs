@@ -221,8 +221,7 @@ public class DealerServiceTest
     public void FailedShuffleDeckSeeded()
     {
         Queue<Card> testDeck = ds.CreateFullDeck();
-
-
+        
     }
 
     [Fact]
