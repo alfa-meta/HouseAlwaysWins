@@ -182,7 +182,6 @@ public class DealerServiceTest
         Assert.Equal(1, testDeckCount);
     }
 
-    //     Queue<Card> ShuffleDeck(Queue<Card> deck, int seed) Tests --------------
 
     [Fact]
     public void FailedShuffleDeckRandom()
